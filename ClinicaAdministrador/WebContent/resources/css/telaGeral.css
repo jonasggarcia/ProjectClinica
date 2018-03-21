@@ -1,0 +1,138 @@
+*{
+	font-family: monospace;
+}
+
+.ui-growl {
+   z-index:99999999999 !important;
+}
+
+#titleTela > h4{
+	font-weight: bold;
+	font-size: 20px;
+}
+
+#topoTela {
+	margin-top: 0px;
+	width: 98%;
+	margin-left: 1%;
+	float: left;
+}
+
+#centroTela {
+	width: 98%;
+	margin-left: 1%;
+	float: left;
+}
+
+#titleTela {
+	display: inline-block;
+	width: 30%;
+	min-height: 30px;
+	max-height: 50px;
+	float: left;
+}
+
+#buttonsTopoTela {
+	display: inline-block;
+	width: 70%;
+	min-height: 30px;
+	max-height: 50px;
+	float: right;
+}
+
+.btNovo {
+	background-color: #7cb940 !important;
+	padding: 5px !important;
+	margin: 2px;
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btSave {
+	background-color: #5d8cc1 !important;
+	padding: 5px !important;
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btCancel {
+	background-color: #c1262b !important;
+	padding: 5px !important;
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btEdit {
+	background-color: #ba4368 !important;
+	padding: 5px !important;
+	margin: 2px;
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btNovo:HOVER{
+	text-decoration: none;
+	color: #FFFF;
+	background-color: #9fea54 !important;
+	border: 1px solid #FFF;
+}
+
+.btSave:HOVER{
+	text-decoration: none;
+	color: #FFFF;
+	background-color: #72a6e0 !important;
+	border: 1px solid #FFF;
+}
+
+.btCancel:HOVER{
+	text-decoration: none;
+	color: #FFFF;
+	background-color: #e83e44 !important;
+	border: 1px solid #FFF;
+}
+
+.btEdit:HOVER{
+	text-decoration: none;
+	color: #FFFF;
+	background-color: #ef759b !important;
+	border: 1px solid #FFF;
+}
+
+.btNovo:FOCUS{
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btEdit:FOCUS{
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btSave:FOCUS{
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.btCancel:FOCUS{
+	text-decoration: none;
+	color: #FFFF;
+}
+
+.panelButtonsTopoTela {
+	float: right;
+	margin-top: 8px;
+}
+
+.searchInput{
+	width: 100%;
+	border-radius: 3px;
+	font-size: 16px;
+	margin-bottom: 10px !important;
+	margin-top: 10px !important;
+}
+
+.panelDialogButtons{
+	margin-top: 10px !important;
+	text-align: center;
+}
+

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>MEDSYSTEM</title>
+
+	<h:outputStylesheet library="css" name="telaGeral.css"></h:outputStylesheet>
+
+</h:head>
+<body>
+	<b:growl id="globalMsg" globalOnly="true" showDetail="true" timer="3"
+		styleClass="ui-growl" />
+	<b:container fluid="true">
+		<b:row style="background-color: cadetblue;">
+			<b:column col-md="12" style="background-color: #25aee5;">
+				<a href="#"><img src="../resources/images/medsystemlogo.png" /></a>
+			</b:column>
+		</b:row>
+
+		<b:row>
+			<b:column col-md="3" style="background-color: #CCCC">
+			Template Aqui também
+		</b:column>
+			<b:column col-md="9">
+				<ui:insert style="margin:8px;" name="content" />
+			</b:column>
+		</b:row>
+	</b:container>
+	<script>
+		$(document).ready(function() {
+			unSelectRow();
+
+		});
+
+		function selectRow() {
+			$('.btEditar').show();
+			$('.btRemover').show();
+		}
+
+		function unSelectRow() {
+			$('.btEditar').hide();
+			$('.btRemover').hide();
+		}
+	</script>
+</body>
+</html>

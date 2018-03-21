@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<!-- Banco de dados do software principal -->
+	<persistence-unit name="LocalDB">
+
+		<!-- Classes de Dominio -->
+
+		<class>com.clinica.domain.Exame</class>
+		<class>com.clinica.domain.Medicamento</class>
+		<class>com.clinica.domain.TipoAtendimento</class>
+		
+	
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/clinica?createDatabaseIfNotExist=true" />
+
+			<property name="javax.persistence.jdbc.user" value="root" />
+
+
+
+			<property name="javax.persistence.jdbc.password" value="" />
+
+			<!-- modo de tratamento para a base de dados, neste caso a base será sempre 
+				atualizada, os campos não serão apagados, apenas se adicionarão campos quando 
+				necessários -->
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+
+			<!--propriedades utilizadas para configurar a exibição dos códigos sql 
+				e sua formatação, neste caso não serão exibidos, para que estes sejam exibidos 
+				basta atribuir o valor true para as propriedades -->
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.format_sql" value="false" />
+
+			<!-- configuração do dialeto utilizado no banco de dados, neste caso o 
+				dialeto utilizado é o dialeto do SQLITE -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+		</properties>
+	</persistence-unit>
+
+</persistence>

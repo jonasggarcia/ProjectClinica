@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<h:outputStylesheet library="css" name="geral.css"/>
+	<h:outputStylesheet library="css" name="datatables.min.css"/>
+	
+	<script type="text/javascript" src="../resources/js/datatables.min.js"></script>
+
+	<b:growl id="globalMsg" allow-dismiss="true" globalOnly="true" showDetail="false" timer="3"
+		styleClass="ui-growl"  />
+
+	<b:row style="background-color: cadetblue;">
+		<b:column col-md="12" style="background-color: #25aee5;">
+			<a href="#"><img src="../resources/images/medsystemlogo.png" /></a>
+		</b:column>
+	</b:row>
+
+	<script>
+		$(document).ready(function() {
+			unSelectRow();
+
+		});
+
+		function selectRow() {
+			$('.btEditar').show();
+			$('.btRemover').show();
+		}
+
+		function unSelectRow() {
+			$('.btEditar').hide();
+			$('.btRemover').hide();
+		}
+	</script>
+
+</ui:fragment>
