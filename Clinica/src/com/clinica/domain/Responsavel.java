@@ -34,7 +34,9 @@ public class Responsavel extends GenericDomain{
 	private Integer numero;
 	
 	private String email;
-		
+	
+	private String senha;
+	
 	private String ativo;
 
 	public String getNome() {
@@ -133,6 +135,13 @@ public class Responsavel extends GenericDomain{
 		this.email = email;
 	}
 
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
 	
 	public void setAtivo(String ativo) {
 		this.ativo = ativo;
