@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
 import org.omnifaces.util.Messages;
@@ -13,6 +14,7 @@ import com.clinica.dao.ResponsavelDAO;
 import com.clinica.domain.Responsavel;
 
 @ManagedBean(name = "MBResponsavel")
+@ViewScoped
 public class ResponsavelBean {
 
 	private Responsavel responsavel;
@@ -46,13 +48,15 @@ public class ResponsavelBean {
 	public void remover() {
 		if (new PacienteDAO().loadByResponsavel(responsavel) != null) {
 			if (new PacienteDAO().loadByResponsavel(responsavel).size() > 0) {
+				Messages.addGlobalWarn("Este responsável está vinculado com Pacientes!");
+				return;
+			} else {
 				dao.deletar(responsavel.getId(), true);
 				lista = dao.loadAllSimple();
-			} else {
-				Messages.addGlobalWarn("Este responsável eatá vinculado com Pacientes!");
 			}
 		} else {
-			Messages.addGlobalWarn("Este responsável eatá vinculado com Pacientes!");
+			dao.deletar(responsavel.getId(), true);
+			lista = dao.loadAllSimple();
 		}
 	}
 

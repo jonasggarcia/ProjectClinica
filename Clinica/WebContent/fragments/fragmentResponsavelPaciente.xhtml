@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+	<b:form id="formResponsavelList">
+		<b:modal closeOnEscape="false" backdrop="false" closable="false"
+			title="Responsáveis" styleClass="modalResponsavelList">
+			<b:dataTable id="tableResps" pageLength="7" styleClass="table"
+				selectionInfo="false" responsive="true"
+				customOptions="'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 4 }]"
+				customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
+				var="item" value="#{MBResponsavel.lista}" style="width:100%;">
+				<f:facet name="header">
+					<tr>
+						<th>Id</th>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>Ativo</th>
+						<th style="text-align: center !important;"><b:icon name="cog"
+								size="sm" /></th>
+					</tr>
+				</f:facet>
+
+				<b:dataTableColumn value="#{item.id}" />
+				<b:dataTableColumn value="#{item.nome}" />
+				<b:dataTableColumn value="#{item.cpf}" />
+				<b:dataTableColumn value="#{item.ativo}" />
+				<b:dataTableColumn style="text-align: center;">
+					<b:commandButton ajax="true" look="default" icon="check" size="xs"
+						actionListener="#{MBPaciente.putRespToPatient}"
+						update="formNovo:panelRespInfo formEditar:panelRespInfo"
+						oncomplete="$('.modalResponsavelList').modal('hide');$('.panelRespInfo').css('display','block');$('.panelRespInfoEditar').css('display','block');">
+						<f:attribute name="selected" value="#{item}" />
+					</b:commandButton>
+				</b:dataTableColumn>
+			</b:dataTable>
+			<f:facet name="footer">
+				<b:button value="CANCELAR" look="danger" icon="close"
+					onclick="$('.modalResponsavelList').modal('hide');$('.modalNovo').modal('show');" />
+				<b:commandButton ajax="true" look="success" value="NOVO"
+					icon="plus-sign"
+					oncomplete="$('.modalResponsavelList').modal('hide');$('.modalNovoResp').modal('show');"
+					actionListener="#{MBResponsavel.novo}" update="formNovoResp">
+				</b:commandButton>
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formNovoResp">
+		<b:modal backdrop="false" closable="false" closeOnEscape="false"
+			title="Novo Responsável" styleClass="modalNovoResp"
+			content-style="height: 400px !important; overflow-x: auto !important;">
+			<b:panelGrid id="panelText" columns="1">
+				<b:inputText tooltip="Nome Completo" id="nome"
+					value="#{MBResponsavel.responsavel.nome}" label="Nome"
+					required="true" requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:selectOneMenu value="#{MBResponsavel.responsavel.sexo}"
+					label="Sexo" required="true" requiredMessage="Campo Obrigatório">
+					<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+					<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+				</b:selectOneMenu>
+				<b:inputText id="cpf" mask="999.999.999-99"
+					value="#{MBResponsavel.responsavel.cpf}" label="CPF"
+					required="true" requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText tooltip="Somente Números" id="rg"
+					value="#{MBResponsavel.responsavel.rg}" label="RG" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText tooltip="dd/mm/aaaa" mask="99/99/9999"
+					value="#{MBResponsavel.responsavel.dataNascimento}" required="true"
+					requiredMessage="Campo Obrigatório!" id="dataNascimento"
+					label="Data de Nascimento">
+					<f:convertDateTime locale="pt_BR" />
+				</b:inputText>
+				<b:message for="@previous" />
+				<b:panel title="Contato" collapsible="false">
+					<b:inputText id="telefone" styleClass="txTelefoneFormNovoResp"
+						value="#{MBResponsavel.responsavel.telefone}" label="Telefone"
+						mask="(99)9999-9999" />
+					<b:inputText id="celular" styleClass="txCelularFormNovoResp"
+						value="#{MBResponsavel.responsavel.celular}" label="Celular"
+						mask="(99)99999-9999" />
+					<b:inputText
+						tooltip="Email para recebimento de Mensagens e Avisos ao Responsável"
+						id="nomeUsuario" value="#{MBResponsavel.responsavel.email}"
+						label="Email" required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+				<b:panel title="Localização" collapsible="false">
+					<b:inputText id="cidade"
+						value="#{MBResponsavel.responsavel.cidade}" label="Cidade"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText id="endereco"
+						value="#{MBResponsavel.responsavel.endereco}" label="Endereço"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText id="numero"
+						value="#{MBResponsavel.responsavel.numero}" label="Número"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText id="bairro"
+						value="#{MBResponsavel.responsavel.bairro}" label="Bairro"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:alert style="display: none; text-align: left;" severity="danger"
+					styleClass="msgFoneCelFormNovoResp">
+					<strong>Digite um Celular ou um Telefone!</strong>
+				</b:alert>
+				<b:button value="Salvar" look="primary"
+					onclick="return validaFormNovoResp();"
+					style="float: right; margin:8px;" />
+				<b:commandButton styleClass="commandButtonSalvarNovoResp"
+					ajax="true" style="float: right; margin:8px; display:none;"
+					value="Salvar" look="primary" action="#{MBResponsavel.salvar}"
+					update="formResponsavelList globalMsg"
+					oncomplete="$('.modalNovoResp').modal('hide');$('.modalResponsavelList').modal('show');" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger"
+					onclick="$('.modalNovoResp').modal('hide');$('.modalResponsavelList').modal('show');" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<script>
+		function validaFormNovoResp() {
+			var txTelefone = $('.txTelefoneFormNovoResp');
+			var txCelular = $('.txCelularFormNovoResp');
+
+			var msgFoneCel = $('.msgFoneCelFormNovoResp');
+			var command = $('.commandButtonSalvarNovoResp');
+
+			var ret = false;
+			var ret1 = false;
+
+			if ((txTelefone.val() != '') || (txCelular.val() != '')) {
+				ret = true;
+				msgFoneCel.css("display", "none");
+			} else {
+				ret = false;
+				msgFoneCel.css("display", "block");
+			}
+
+			if (ret) {
+				command.click();
+				return true;
+			}
+			return false;
+		}
+	</script>
+
+</ui:fragment>

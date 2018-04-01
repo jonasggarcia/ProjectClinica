@@ -34,10 +34,8 @@ public class Paciente extends GenericDomain {
 	private String endereco;
 
 	private Integer numero;
-
+	
 	private String email;
-
-	private String senha;
 
 	@ManyToOne
 	private Responsavel responsavel;
@@ -167,11 +165,5 @@ public class Paciente extends GenericDomain {
 		this.ativo = ativo;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
 
-	public String getSenha() {
-		return senha;
-	}
 }

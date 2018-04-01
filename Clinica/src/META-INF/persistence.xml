@@ -13,6 +13,11 @@
 		<class>com.clinica.domain.Medicamento</class>
 		<class>com.clinica.domain.TipoAtendimento</class>
 		<class>com.clinica.domain.Administrador</class>
+		<class>com.clinica.domain.Responsavel</class>
+		<class>com.clinica.domain.Paciente</class>
+		<class>com.clinica.domain.Especialidade</class>
+		<class>com.clinica.domain.Medico</class>
+		
 	
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 

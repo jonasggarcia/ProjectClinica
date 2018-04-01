@@ -8,39 +8,37 @@ import javax.persistence.TemporalType;
 
 @SuppressWarnings("serial")
 @Entity
-public class Responsavel extends GenericDomain{
+public class Responsavel extends GenericDomain {
 
 	private String nome;
-	
+
 	private String cpf;
-	
+
 	private String rg;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
-	
+
 	private String sexo;
-	
+
 	private String telefone;
-	
+
 	private String celular;
-	
+
 	private String cidade;
-	
+
 	private String bairro;
-	
+
 	private String endereco;
-	
+
 	private Integer numero;
-	
+
 	private String email;
-	
-	private String senha;
-	
+
 	private String ativo;
 
 	public String getNome() {
-		return nome;
+		return this.nome;
 	}
 
 	public void setNome(String nome) {
@@ -135,18 +133,10 @@ public class Responsavel extends GenericDomain{
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-	
 	public void setAtivo(String ativo) {
 		this.ativo = ativo;
 	}
-	
+
 	public String getAtivo() {
 		return ativo;
 	}
