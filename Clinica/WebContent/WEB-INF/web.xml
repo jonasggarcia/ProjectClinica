@@ -21,6 +21,11 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>bootstrap</param-value>
+	</context-param>
 
 	<!-- The BootsFaces_USETHEME context-param controls the loading of the bootstrap-theme.css -->
 	<!-- The default is false, when set to true the bootstrap-theme.css will 

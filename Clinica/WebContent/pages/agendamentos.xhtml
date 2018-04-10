@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>MEDSYSTEM</title>
+</h:head>
+<h:body>
+	<!-- <ui:composition template="../templates/template.xhtml">
+		<ui:define name="content"> -->
+	<b:container fluid="true">
+		<ui:insert name="navTop">
+			<ui:include src="../fragments/fragmentTop.xhtml" />
+		</ui:insert>
+		<b:row>
+			<ui:insert name="navLeft">
+				<ui:include src="../fragments/fragmentLeft.xhtml" />
+			</ui:insert>
+			<b:column col-md="9">
+				<b:row>
+					<p:schedule value="#{MBAgendamento.agendamentos}" locale="pt" timeZone="GMT+3">
+
+					</p:schedule>
+				</b:row>
+			</b:column>
+		</b:row>
+	</b:container>
+</h:body>
+</html>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="medicamentos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2ce41d6a-6ddf-4d96-9668-4936f7d5ce56">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nome" class="java.lang.String"/>
+	<field name="tipoUso" class="java.lang.String"/>
+	<field name="observacao" class="java.lang.String"/>
+	<field name="ativo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="24" width="100" height="30" uuid="7e0ef800-cfa9-4db5-ba3c-328931168e41"/>
+				<text><![CDATA[Clínica Médica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="20" width="56" height="20" uuid="71ccf595-bd22-4f5f-88d2-9ea9e4cb6887"/>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="20" width="100" height="20" uuid="12c80f10-7879-4d78-b2cd-b1e56163ee8a"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="50" width="56" height="20" uuid="0244839b-6d8d-4062-a662-335abd31f3f7"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="470" y="50" width="100" height="20" uuid="54b9cbb0-2cfd-40ce-aeaf-e34233d7552b"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="150" height="20" uuid="1a99ceb5-9778-4c9f-bd24-d248928d831f"/>
+				<text><![CDATA[Nome]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="10" width="140" height="20" uuid="5a259147-09b1-4931-a163-4a68f85dfafe"/>
+				<text><![CDATA[Tipo de Uso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="10" width="140" height="20" uuid="b8737ab7-1207-4099-b20d-1018924809d9"/>
+				<text><![CDATA[Observação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="10" width="60" height="20" uuid="a0396242-dfcd-4a71-9ef9-15684b13c1f3"/>
+				<text><![CDATA[Ativo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="30" width="560" height="1" uuid="fa605007-14ee-471b-8ffc-18459c66c470"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="150" height="30" uuid="232c6f03-ca46-4bfe-b1ce-e141de1f2d67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1adcf35a-faf5-4377-8300-1adb49f35e68"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="140" height="30" uuid="3c342cdb-74da-4f3a-8e42-2b1b00b795cc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c0e4a1f-8a58-4ae7-9cc5-fbf10bd627f4"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{tipoUso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="140" height="30" uuid="6f705869-4019-4f02-953e-eb0f42beb527">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80f39078-971b-493a-a24c-33e412eea233"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="0" width="55" height="30" uuid="5c50dff5-66fa-4479-8827-9bed973d9b2c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="990b8f31-5cd8-4f21-95fe-30342db90efb"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ativo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

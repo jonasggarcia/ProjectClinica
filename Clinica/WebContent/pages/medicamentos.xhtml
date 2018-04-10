@@ -22,6 +22,11 @@
 			</ui:insert>
 			<b:column col-md="9">
 				<b:row>
+					<h:form>
+						<b:inputText style="" styleClass="edtHideSearch" value="#{MBMedicamento.search}">
+							<f:ajax event="change" listener="#{MBMedicamento.setSearchValue}" />
+						</b:inputText>
+					</h:form>
 					<b:column col-md="6">
 						<h4>ÍNICIO/CADASTRO/MEDICAMENTOS</h4>
 					</b:column>
@@ -43,6 +48,10 @@
 									</b:commandButton>
 								</b:column>
 								<b:column col-md="4">
+									<h:commandLink onclick="" class="btn btn-default"
+										target="_blank" value="Relatório"
+										actionListener="#{MBMedicamento.chamarRelatorio}"
+										update="globalMsg" />
 									<b:commandButton ajax="true" style="float:right; margin: 8px;"
 										look="success" value="NOVO" icon="plus-sign"
 										oncomplete="$('.modalNovo').modal();"
@@ -56,9 +65,12 @@
 				<b:row>
 					<b:column col-md="12">
 						<b:form id="formTable">
-							<b:dataTable selectionInfo="false" pdf="true"
+
+							<b:dataTable styleClass="tableMedicamentos" selectionInfo="false"
+								pdf="true"
 								onselect="selectRow();ajax:MBMedicamento.onSelect(item, single, i);"
-								ondeselect="unSelectRow();" select="true" responsive="true"
+								onsearch="search();" ondeselect="unSelectRow();" select="true"
+								responsive="true"
 								customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
 								var="item" value="#{MBMedicamento.lista}"
 								selection-mode="single">
@@ -168,5 +180,12 @@
 
 	<!-- 	</ui:define>
 	</ui:composition> -->
+
+	<script>
+		function search(obj) {
+			var valueSearch = $('.input-sm').val();
+			$('.edtHideSearch').val(valueSearch);
+		}
+	</script>
 </h:body>
 </html>
