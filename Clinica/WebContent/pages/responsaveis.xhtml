@@ -55,12 +55,27 @@
 				</b:row>
 				<b:row>
 					<b:column col-md="12">
+						<h:form>
+							<b:inputText
+								placeholder="Busque pelo nome, cpf, cidade, endereço e ativo ..."
+								value="#{MBResponsavel.search}">
+								<f:ajax event="keyup" listener="#{MBResponsavel.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
 						<b:form id="formTable">
 							<b:dataTable tooltip="Clique no registro para mais opções"
-								styleClass="table" selectionInfo="false" pdf="true"
+								styleClass="table" selectionInfo="false"
 								onselect="selectRow();ajax:MBResponsavel.onSelect(item, single, i);"
 								ondeselect="unSelectRow();" select="true" responsive="true"
-								customOptions="'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 6 }]"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 6 }]"
 								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
 								var="item" value="#{MBResponsavel.lista}"
 								selection-mode="single" style="width:100%;">

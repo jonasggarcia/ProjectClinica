@@ -17,7 +17,6 @@ import org.omnifaces.util.Messages;
 import com.clinica.dao.MedicamentoDAO;
 import com.clinica.domain.Medicamento;
 
-import net.bootsfaces.component.inputText.InputText;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -26,8 +25,6 @@ import net.sf.jasperreports.engine.util.SimpleFileResolver;
 @ManagedBean(name = "MBMedicamento")
 @ViewScoped
 public class MedicamentoBean {
-	
-	private InputText txtSearch;
 
 	private String search;
 
@@ -68,16 +65,9 @@ public class MedicamentoBean {
 		this.medicamento = med;
 	}
 
-	public void setSearchValue(InputText tx) {
-		System.out.println(tx.getValue().toString());
-		this.search = tx.getValue().toString();
-	}
-
 	@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 	public void chamarRelatorio() {
-		System.out.println(search);
 		try {
-			System.out.println("teste");
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			String reportsDirPath = facesContext.getExternalContext().getRealPath("/") + "WEB-INF/reports";
 			File reportsDir = new File(reportsDirPath);
@@ -98,6 +88,10 @@ public class MedicamentoBean {
 			e.printStackTrace();
 			Messages.addGlobalError("ERro ao Gerar Relatório!");
 		}
+	}
+	
+	public void onSearch() {
+		lista = dao.loadAllSimpleFiltered(search, Medicamento.getFilters());
 	}
 
 	public List<Medicamento> getLista() {

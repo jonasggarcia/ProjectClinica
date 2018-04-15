@@ -140,4 +140,8 @@ public class Responsavel extends GenericDomain {
 	public String getAtivo() {
 		return ativo;
 	}
+	
+	public static String[] getFilters() {
+		return new String[] {"nome", "cpf", "cidade", "endereco", "ativo"};
+	}
 }

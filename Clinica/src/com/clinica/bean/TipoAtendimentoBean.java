@@ -14,6 +14,8 @@ import com.clinica.domain.TipoAtendimento;
 @ViewScoped
 public class TipoAtendimentoBean {
 
+	private String search;
+
 	private List<TipoAtendimento> lista;
 
 	private TipoAtendimento tipoAtendimento;
@@ -56,6 +58,10 @@ public class TipoAtendimentoBean {
 		this.tipoAtendimento = tipoAtendimento;
 	}
 
+	public void onSearch() {
+		lista = daoTipo.loadAllSimpleFiltered(search, TipoAtendimento.getFilters());
+	}
+
 	public void setLista(List<TipoAtendimento> lista) {
 		this.lista = lista;
 	}
@@ -72,4 +78,11 @@ public class TipoAtendimentoBean {
 		return tipoAtendimento;
 	}
 
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getSearch() {
+		return search;
+	}
 }

@@ -18,6 +18,8 @@ import com.clinica.domain.Medico;
 @ManagedBean(name = "MBMedico")
 @ViewScoped
 public class MedicoBean{
+	
+	private String search;
 
 	private Medico medico;
 
@@ -98,6 +100,10 @@ public class MedicoBean{
 		}
 		return false;
 	}
+	
+	public void onSearch() {
+		lista = dao.loadAllSimpleFiltered(search, Medico.getFilters());
+	}
 
 	public void onSelect(Medico med, String type, String indexes) {
 		this.medico = med;
@@ -134,5 +140,13 @@ public class MedicoBean{
 
 	public List<Especialidade> getEspecialidades() {
 		return especialidades;
+	}
+	
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	
+	public String getSearch() {
+		return search;
 	}
 }

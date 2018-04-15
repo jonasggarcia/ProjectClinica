@@ -17,6 +17,8 @@ import com.clinica.domain.Medico;
 @ViewScoped
 public class EspecialidadeBean {
 
+	private String search;
+
 	private Especialidade especialidade;
 
 	private List<Especialidade> lista;
@@ -56,6 +58,10 @@ public class EspecialidadeBean {
 	public void onSelect(Especialidade esp, String type, String indexes) {
 		this.especialidade = esp;
 	}
+	
+	public void onSearch() {
+		lista = dao.loadAllSimpleFiltered(search, Especialidade.getFilters());
+	}
 
 	public void setEspecialidade(Especialidade especialidade) {
 		this.especialidade = especialidade;
@@ -71,5 +77,13 @@ public class EspecialidadeBean {
 
 	public List<Especialidade> getLista() {
 		return lista;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getSearch() {
+		return search;
 	}
 }

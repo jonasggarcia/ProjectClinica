@@ -130,4 +130,7 @@ public class Administrador extends GenericDomain {
 		this.tipoTexto = tipoTexto;
 	}
 
+	public static String[] getFilters() {
+		return new String[] {"nome","cpf","tipo","ativo"};
+	}
 }

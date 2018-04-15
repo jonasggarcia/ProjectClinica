@@ -165,5 +165,7 @@ public class Paciente extends GenericDomain {
 		this.ativo = ativo;
 	}
 
-
+	public static String[] getFilters() {
+		return new String[] {"nome","cpf","cidade","endereco","responsavel.nome","ativo"};
+	}
 }

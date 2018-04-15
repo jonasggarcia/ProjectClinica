@@ -7,12 +7,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+
 import com.clinica.dao.AdministradorDAO;
 import com.clinica.domain.Administrador;
 
 @ManagedBean(name = "MBAdministrador")
 @ViewScoped
 public class AdministradorBean {
+
+	private String search;
 
 	private Administrador administrador;
 
@@ -56,6 +61,10 @@ public class AdministradorBean {
 		this.administrador = admin;
 	}
 
+	public void onSearch() {
+		lista = dao.loadAllSimpleFiltered(search, Administrador.getFilters());
+	}
+
 	public Administrador getAdministrador() {
 		return administrador;
 	}
@@ -70,5 +79,21 @@ public class AdministradorBean {
 
 	public void setLista(List<Administrador> lista) {
 		this.lista = lista;
+	}
+
+	public void onRowSelect(SelectEvent event) {
+		this.administrador = (Administrador) event.getObject();
+	}
+
+	public void onRowUnselect(UnselectEvent event) {
+		System.out.println("Descelecionou");
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getSearch() {
+		return search;
 	}
 }

@@ -16,6 +16,8 @@ import com.clinica.domain.Responsavel;
 @ManagedBean(name = "MBResponsavel")
 @ViewScoped
 public class ResponsavelBean {
+	
+	private String search;
 
 	private Responsavel responsavel;
 
@@ -67,6 +69,10 @@ public class ResponsavelBean {
 	public void selectItemInfo(ActionEvent ev) {
 		responsavel = (Responsavel) ev.getComponent().getAttributes().get("selected");
 	}
+	
+	public void onSearch() {
+		lista = dao.loadAllSimpleFiltered(search, Responsavel.getFilters());
+	}
 
 	public Responsavel getResponsavel() {
 		return responsavel;
@@ -90,5 +96,13 @@ public class ResponsavelBean {
 
 	public void setDao(ResponsavelDAO dao) {
 		this.dao = dao;
+	}
+	
+	public void setSearch(String search) {
+		this.search = search;
+	}
+	
+	public String getSearch() {
+		return search;
 	}
 }

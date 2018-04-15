@@ -15,6 +15,8 @@ import com.clinica.domain.Responsavel;
 @ViewScoped
 public class PacienteBean {
 
+	private String search;
+
 	private String hasResponsavel;
 
 	private Paciente paciente;
@@ -76,6 +78,10 @@ public class PacienteBean {
 			hasResponsavel = "1";
 		}
 	}
+	
+	public void onSearch() {
+		listaPacientes = daoPaciente.loadAllSimpleFiltered(search, Paciente.getFilters());
+	}
 
 	public void selectItemInfo(ActionEvent e) {
 		paciente = (Paciente) e.getComponent().getAttributes().get("selected");
@@ -103,5 +109,13 @@ public class PacienteBean {
 
 	public String getHasResponsavel() {
 		return hasResponsavel;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getSearch() {
+		return search;
 	}
 }

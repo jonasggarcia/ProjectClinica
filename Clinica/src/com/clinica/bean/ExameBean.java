@@ -6,13 +6,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-
 import com.clinica.dao.ExameDAO;
 import com.clinica.domain.Exame;
 
 @ManagedBean(name = "MBExame")
 @ViewScoped
 public class ExameBean {
+
+	private String search;
 
 	private List<Exame> exames;
 
@@ -41,14 +42,18 @@ public class ExameBean {
 		dao.editar(exame, true);
 		exames = dao.loadAllSimple();
 	}
-	
-	public void remover(){
+
+	public void remover() {
 		dao.deletar(exame.getId(), true);
 		exames = dao.loadAllSimple();
 	}
-	
+
 	public void onSelect(Exame exame, String typeOfSelection, String indexes) {
 		this.exame = exame;
+	}
+	
+	public void onSearch() {
+		exames = dao.loadAllSimpleFiltered(search, Exame.getFilters());
 	}
 
 	public void setExames(List<Exame> exames) {
@@ -67,4 +72,11 @@ public class ExameBean {
 		return exame;
 	}
 
+	public void setSearch(String search) {
+		this.search = search;
+	}
+
+	public String getSearch() {
+		return search;
+	}
 }

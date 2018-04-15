@@ -55,15 +55,28 @@
 				</b:row>
 				<b:row>
 					<b:column col-md="12">
+						<h:form>
+							<b:inputText placeholder="Busque pela descrição ..."
+								value="#{MBEspecialidade.search}">
+								<f:ajax event="keyup" listener="#{MBEspecialidade.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
 						<b:form id="formTable">
-							<b:dataTable selectionInfo="false" pdf="true" pageLength="8"
-								custom-options="'scrollX':true, 'lengthChange':false"
+							<b:dataTable selectionInfo="false" pageLength="8"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false"
 								onselect="selectRow();ajax:MBEspecialidade.onSelect(item, single, i);"
 								ondeselect="unSelectRow();" select="true"
-								customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
 								var="item" value="#{MBEspecialidade.lista}"
-								selection-mode="single"
-								style="width:100%;">
+								selection-mode="single" style="width:100%;">
 								<f:facet name="header">
 									<tr>
 										<th>Id</th>

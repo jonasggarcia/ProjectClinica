@@ -28,6 +28,6 @@ public class TipoAtendimento extends GenericDomain {
 	}
 
 	public static String[] getFilters() {
-		return new String[] { "id", "descricao","ativo" };
+		return new String[] { "descricao","ativo" };
 	}
 }

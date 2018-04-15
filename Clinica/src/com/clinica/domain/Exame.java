@@ -26,6 +26,6 @@ public class Exame extends GenericDomain {
 	}
 
 	public static String[] getFilters(){
-		return new String[]{"id","nome","ativo"};
+		return new String[]{"nome","ativo"};
 	}
 }

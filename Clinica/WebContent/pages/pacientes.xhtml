@@ -55,12 +55,27 @@
 				</b:row>
 				<b:row>
 					<b:column col-md="12">
+						<h:form>
+							<b:inputText
+								placeholder="Busque pelo nome, cpf, cidade, endereço, responsável e ativo ..."
+								value="#{MBPaciente.search}">
+								<f:ajax event="keyup" listener="#{MBPaciente.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
 						<b:form id="formTable">
-							<b:dataTable styleClass="table" selectionInfo="false" pdf="true"
+							<b:dataTable styleClass="table" selectionInfo="false" 
 								onselect="selectRow();ajax:MBPaciente.onSelect(item, single, i);"
 								ondeselect="unSelectRow();" select="true" responsive="true"
 								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
-								customOptions="'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 7 }]"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 7 }]"
 								var="item" value="#{MBPaciente.listaPacientes}"
 								selection-mode="single">
 								<f:facet name="header">

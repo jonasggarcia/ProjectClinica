@@ -17,6 +17,10 @@
 		<class>com.clinica.domain.Paciente</class>
 		<class>com.clinica.domain.Especialidade</class>
 		<class>com.clinica.domain.Medico</class>
+		<class>com.clinica.domain.Agendamento</class>
+		<class>com.clinica.domain.Consulta</class>
+		<class>com.clinica.domain.Receita</class>
+		<class>com.clinica.domain.LogSistema</class>
 		
 	
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>

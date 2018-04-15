@@ -38,7 +38,8 @@
 									<b:commandButton ajax="true" styleClass="btEditar"
 										style="float:right; margin: 8px;" look="success"
 										value="EDITAR" icon="plus-sign"
-										oncomplete="$('.modalEditar').modal();unSelectRow();" update="formEditar">
+										oncomplete="$('.modalEditar').modal();unSelectRow();"
+										update="formEditar">
 									</b:commandButton>
 								</b:column>
 								<b:column col-md="4">
@@ -54,8 +55,23 @@
 				</b:row>
 				<b:row>
 					<b:column col-md="12">
+						<h:form>
+							<b:inputText placeholder="Busque pela descrição e ativo ..."
+								value="#{MBTipoAtendimento.search}">
+								<f:ajax event="keyup" listener="#{MBTipoAtendimento.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
 						<b:form id="formTable">
-							<b:dataTable selectionInfo="false" pdf="true"
+							<b:dataTable selectionInfo="false"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false"
 								onselect="selectRow();ajax:MBTipoAtendimento.onSelect(item, single, i);"
 								ondeselect="unSelectRow();" select="true" responsive="true"
 								customLangUrl="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"

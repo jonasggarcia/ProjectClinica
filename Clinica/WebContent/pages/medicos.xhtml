@@ -55,11 +55,26 @@
 				</b:row>
 				<b:row>
 					<b:column col-md="12">
+						<h:form>
+							<b:inputText
+								placeholder="Busque pelo nome, crm e ativo ..."
+								value="#{MBMedico.search}">
+								<f:ajax event="keyup" listener="#{MBMedico.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
 						<b:form id="formTable">
 							<b:dataTable styleClass="table" selectionInfo="false"
 								onselect="selectRow();ajax:MBMedico.onSelect(item, single, i);"
 								ondeselect="unSelectRow();" select="true"
-								custom-options="'scrollX':true, 'lengthChange':false, 'columnDefs':[{'orderable':false, 'targets':5}]"
+								custom-options="'searching':false,'scrollX':true, 'lengthChange':false, 'columnDefs':[{'orderable':false, 'targets':5}]"
 								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
 								var="item" value="#{MBMedico.lista}" selection-mode="single"
 								style="width: 100%;">
