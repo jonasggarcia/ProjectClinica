@@ -4,12 +4,16 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:b="http://bootsfaces.net/ui"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>MEDSYSTEM</title>
+	<h:outputStylesheet library="css" name="geral.css" />
+	<h:outputStylesheet library="css" name="datatables.min.css" />
+
+	<script type="text/javascript" src="../resources/js/datatables.min.js"></script>
 </h:head>
 <h:body>
+	<h:outputScript library="js" name="pt-br.js" />
 	<!-- <ui:composition template="../templates/template.xhtml">
 		<ui:define name="content"> -->
 	<b:container fluid="true">
@@ -17,17 +21,263 @@
 			<ui:include src="../fragments/fragmentTop.xhtml" />
 		</ui:insert>
 		<b:row>
-			<ui:insert name="navLeft">
-				<ui:include src="../fragments/fragmentLeft.xhtml" />
-			</ui:insert>
 			<b:column col-md="9">
-				<b:row>
-					<p:schedule value="#{MBAgendamento.agendamentos}" locale="pt" timeZone="GMT+3">
-
-					</p:schedule>
+				<b:row style="padding: 8px !important;">
+					<b:fullCalendar styleClass="fullCalendar" editable="false"
+						defaultView="agendaDay"
+						businessHours="{start: '8:00', end: '19:00', dow: [1, 2, 3, 4, 5, 6]}"
+						dayClick="function(calEvent, jsEvent, view){ alert(String(calEvent.format())); }"
+						eventClick="function(calEvent, jsEvent, view){ capturaEvento(calEvent.id); }"
+						lang="pt-br" scroll-time="08:00:00"
+						calendarHeader="{left: 'prev,next today', center: 'title', right: ''}"
+						slotDuration="00:30:00" events="#{MBAgendamento.jsonConsultas}"></b:fullCalendar>
 				</b:row>
+				<b:row>
+					<h:form>
+						<b:commandButton look="success" value="Novo Agendamento"
+							icon="file" style="float:right; margin-top: 5px;"
+							actionListener="#{MBAgendamento.novo}" update="formNovo"
+							oncomplete="$('.modalNovo').modal('show');" />
+					</h:form>
+				</b:row>
+			</b:column>
+			<b:column col-md="3">
+				<h:form id="formDetalhes">
+					<b:panel rendered="#{MBAgendamento.agendamento != null}"
+						style="margin-top: 10px; width: 100%;" styleClass="panelInfo"
+						collapsed="true" collapsible="false" title="Informações">
+						<h:panelGrid columns="1" width="100%">
+							<b:panel collapsed="true" collapsible="true" title="Agendamento">
+								<h:panelGrid columns="1" width="100%">
+									<b:label
+										text="Início: #{MBAgendamento.agendamento.dataHoraInicioFmt}" />
+									<b:label
+										text="Fim: #{MBAgendamento.agendamento.dataHoraFimFmt}" />
+									<b:label text="OBS: #{MBAgendamento.agendamento.observacoes}" />
+									<b:label text="Status: #{MBAgendamento.agendamento.status}" />
+								</h:panelGrid>
+							</b:panel>
+							<b:panel collapsed="true" title="Paciente">
+								<h:panelGrid columns="1" width="100%">
+									<b:label text="Id: #{MBAgendamento.agendamento.paciente.id}" />
+									<b:label
+										text="Nome: #{MBAgendamento.agendamento.paciente.nome}" />
+									<b:label
+										rendered="#{MBAgendamento.agendamento.paciente.celular != ''}"
+										text="Celular: #{MBAgendamento.agendamento.paciente.celular}" />
+									<b:label
+										rendered="#{MBAgendamento.agendamento.paciente.telefone != ''}"
+										text="Telefone: #{MBAgendamento.agendamento.paciente.telefone}" />
+									<b:panel style="margin-top: 5px;" title="Responsável"
+										rendered="#{MBAgendamento.agendamento.paciente.responsavel != null}">
+										<h:panelGrid columns="1" width="100%">
+											<b:label
+												text="Nome: #{MBAgendamento.agendamento.paciente.responsavel.nome}" />
+											<b:label
+												rendered="#{MBAgendamento.agendamento.paciente.responsavel.celular != ''}"
+												text="Celular: #{MBAgendamento.agendamento.paciente.responsavel.celular}" />
+											<b:label
+												rendered="#{MBAgendamento.agendamento.paciente.responsavel.telefone != ''}"
+												text="Telefone: #{MBAgendamento.agendamento.paciente.responsavel.telefone}" />
+										</h:panelGrid>
+									</b:panel>
+								</h:panelGrid>
+							</b:panel>
+							<b:panel collapsed="true" collapsible="true" title="Médico">
+								<h:panelGrid columns="1" width="100%">
+									<b:label text="Nome: #{MBAgendamento.agendamento.medico.nome}" />
+									<b:label
+										rendered="#{MBAgendamento.agendamento.medico.telefone != ''}"
+										text="Telefone: #{MBAgendamento.agendamento.medico.telefone}" />
+									<b:label
+										rendered="#{MBAgendamento.agendamento.medico.celular != ''}"
+										text="Celular: #{MBAgendamento.agendamento.medico.celular}" />
+								</h:panelGrid>
+							</b:panel>
+						</h:panelGrid>
+					</b:panel>
+				</h:form>
 			</b:column>
 		</b:row>
 	</b:container>
+
+	<!-- Div que controla requisição ajax para carregar dados do agendamento seleiconado -->
+	<div style="display: none;">
+		<h:form id="formOpenModal">
+			<b:inputText styleClass="idLoad" value="#{MBAgendamento.idOpen}" />
+			<b:commandButton ajax="true" styleClass="btLoadAgendamento"
+				actionListener="#{MBAgendamento.loadAgendamento}"
+				update=":formDetalhes" />
+		</h:form>
+	</div>
+
+	<!-- Modal de novo agendamento -->
+	<h:form id="formNovo">
+		<b:modal title="Nova Consulta" id="modalNovo" styleClass="modalNovo"
+			content-style="height: 400px !important; overflow-x: auto !important;"
+			closable="false" backdrop="false">
+			<b:panel title="Paciente">
+				<b:panelGrid columns="2">
+					<h:outputLabel value="Selecione um Paciente" />
+					<b:commandButton value="Buscar" icon="search" size="sm"
+						look="primary"
+						oncomplete="$('.modalNovo').modal('hide');$('.modalPacientes').modal('show');"
+						update="formPacientes" />
+				</b:panelGrid>
+				<b:panelGrid columns="1">
+					<b:inputText label="Nome do Paciente" readonly="true"
+						value="#{MBAgendamento.agendamento.paciente.nome}" />
+					<b:inputText label="CPF do Paciente" readonly="true"
+						value="#{MBAgendamento.agendamento.paciente.cpf}" />
+				</b:panelGrid>
+			</b:panel>
+			<b:panel title="Médico">
+				<b:panelGrid columns="2">
+					<h:outputLabel value="Selecione um Médico" />
+					<b:commandButton value="Buscar" icon="search" size="sm"
+						look="primary"
+						oncomplete="$('.modalNovo').modal('hide');$('.modalMedicos').modal('show');"
+						update="formMedicos" />
+				</b:panelGrid>
+				<b:panelGrid columns="1">
+					<b:inputText value="#{MBAgendamento.agendamento.medico.nome}"
+						readonly="true" label="Nome do Médico" />
+					<b:inputText value="#{MBAgendamento.agendamento.medico.crm}"
+						readonly="true" label="CRM do Médico" />
+				</b:panelGrid>
+			</b:panel>
+			<b:panel title="Dados do Agendamento">
+				<b:panelGrid columns="1">
+					<h:outputLabel for="cbTipo" value="Tipo de Atendimento"/>
+					<h:selectOneMenu id="cbTipo" styleClass="form-control"
+						value="#{MBAgendamento.agendamento.tipoAtendimento}"
+						label="Tipo de Atendimento" required="true"
+						requiredMessage="Campo Obrigatório">
+						<f:selectItems itemLabel="#{item.descricao}" itemValue="#{item}"
+							value="#{MBAgendamento.tiposAtendimento}" />
+					</h:selectOneMenu>
+					<b:message for="@previous" />
+					<b:inputText mask="99/99/9999 99:99"
+						value="#{MBAgendamento.agendamento.dataHoraInicio}"
+						label="Data e Hora de Ínicio" required="true"
+						requiredMessage="Campo Obrigatório">
+						<f:convertDateTime locale="pt" />
+					</b:inputText>
+					<b:message for="@previous" />
+					<b:inputText mask="99/99/9999 99:99"
+						value="#{MBAgendamento.agendamento.dataHoraFim}"
+						label="Data e Hora de Fim" required="true"
+						requiredMessage="Campo Obrigatório">
+						<f:convertDateTime locale="pt" />
+					</b:inputText>
+					<b:message for="@previous" />
+					<b:inputTextarea value="#{MBAgendamento.agendamento.observacoes}"
+						label="Observações" />
+				</b:panelGrid>
+			</b:panel>
+			<f:facet name="footer">
+				<b:button value="Salvar" look="primary"
+					style="float: right; margin:8px;" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger" dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</h:form>
+
+	<!-- Modal que exibe os pacientes para seleção -->
+	<h:form id="formPacientes">
+		<b:modal title="Pacientes Cadastrados" id="modalPacientes"
+			styleClass="modalPacientes" closable="false" backdrop="false">
+			<b:dataTable id="tablePacientes" pageLength="7" styleClass="table"
+				selectionInfo="false" responsive="true"
+				customOptions="'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 4 }]"
+				customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
+				var="item" value="#{MBAgendamento.pacientes}" style="width:100%;">
+				<f:facet name="header">
+					<tr>
+						<th>Nome</th>
+						<th>CPF</th>
+						<th>Responsável</th>
+						<th>Ativo</th>
+						<th style="text-align: center;"><b:icon size="xs" name="cog" /></th>
+					</tr>
+				</f:facet>
+				<b:dataTableColumn value="#{item.nome}" />
+				<b:dataTableColumn value="#{item.cpf}" />
+				<b:dataTableColumn value="#{item.responsavel.nome}" />
+				<b:dataTableColumn value="#{item.ativo}" />
+				<b:dataTableColumn style="text-align: center;">
+					<b:commandButton disabled="#{item.ativo eq 'Não'}" ajax="true"
+						look="default" icon="check" size="xs"
+						actionListener="#{MBAgendamento.selectPaciente}"
+						oncomplete="$('.modalPacientes').modal('hide');$('.modalNovo').modal('show');"
+						update="formNovo">
+						<f:attribute name="selected" value="#{item}" />
+					</b:commandButton>
+				</b:dataTableColumn>
+			</b:dataTable>
+			<f:facet name="footer">
+				<b:commandButton value="Voltar" icon="back" look="warning"
+					oncomplete="$('.modalPacientes').modal('hide');$('.modalNovo').modal('show');"
+					update="formNovo" />
+			</f:facet>
+		</b:modal>
+	</h:form>
+
+	<!-- Modal que exibe os medicos para seleção -->
+	<h:form id="formMedicos">
+		<b:modal title="Médicos Cadastrados" id="modalMedicos"
+			styleClass="modalMedicos" closable="false" backdrop="false">
+			<b:dataTable responsive="true" id="tableMedicos"
+				styleClass="tableMedicos" selectionInfo="false" page-length="2"
+				style="min-width: 100%;"
+				customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
+				customOptions="'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 4 }]"
+				var="item" value="#{MBAgendamento.medicos}" selection-mode="single">
+				<f:facet name="header">
+					<tr>
+						<th>Nome</th>
+						<th>CRM</th>
+						<th>Especialidades</th>
+						<th>Ativo</th>
+						<th style="text-align: center;"><b:icon size="lg" name="cog" /></th>
+					</tr>
+				</f:facet>
+
+				<b:dataTableColumn value="#{item.nome}" />
+				<b:dataTableColumn value="#{item.crm}" />
+				<b:dataTableColumn>
+					<ul>
+						<ui:repeat var="esp" value="#{item.especialidades}">
+							<li>#{esp.descricao}</li>
+						</ui:repeat>
+					</ul>
+				</b:dataTableColumn>
+				<b:dataTableColumn value="#{item.ativo}" />
+				<b:dataTableColumn style="text-align: center;">
+					<b:commandButton disabled="#{item.ativo eq 'Não'}" ajax="true"
+						look="default" icon="check" size="xs"
+						actionListener="#{MBAgendamento.selectMedico}"
+						oncomplete="$('.modalMedicos').modal('hide');$('.modalNovo').modal('show');"
+						update="formNovo">
+						<f:attribute name="selected" value="#{item}" />
+					</b:commandButton>
+				</b:dataTableColumn>
+			</b:dataTable>
+			<f:facet name="footer">
+				<b:commandButton value="Voltar" icon="back" look="warning"
+					oncomplete="$('.modalMedicos').modal('hide');$('.modalNovo').modal('show');"
+					update="formNovo" />
+			</f:facet>
+		</b:modal>
+	</h:form>
+
+
+	<script>
+		function capturaEvento(idEvento) {
+			$('.idLoad').val(idEvento);
+			$('.btLoadAgendamento').click();
+		}
+	</script>
 </h:body>
 </html>
