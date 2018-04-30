@@ -14,14 +14,17 @@
 </h:head>
 <h:body>
 	<h:outputScript library="js" name="pt-br.js" />
-	<!-- <ui:composition template="../templates/template.xhtml">
-		<ui:define name="content"> -->
 	<b:container fluid="true">
 		<ui:insert name="navTop">
 			<ui:include src="../fragments/fragmentTop.xhtml" />
 		</ui:insert>
+
 		<b:row>
-			<b:column col-md="9">
+			<ui:insert name="navLeft">
+				<ui:include src="../fragments/fragmentLeft.xhtml" />
+			</ui:insert>
+			<b:column col-xs="12" col-sm="9" offset-sm="3" col-md="10" offset="2"
+				styleClass="main">
 				<b:row style="padding: 8px !important;">
 					<b:fullCalendar styleClass="fullCalendar" editable="false"
 						defaultView="agendaDay"
@@ -148,7 +151,7 @@
 			</b:panel>
 			<b:panel title="Dados do Agendamento">
 				<b:panelGrid columns="1">
-					<h:outputLabel for="cbTipo" value="Tipo de Atendimento"/>
+					<h:outputLabel for="cbTipo" value="Tipo de Atendimento" />
 					<h:selectOneMenu id="cbTipo" styleClass="form-control"
 						value="#{MBAgendamento.agendamento.tipoAtendimento}"
 						label="Tipo de Atendimento" required="true"

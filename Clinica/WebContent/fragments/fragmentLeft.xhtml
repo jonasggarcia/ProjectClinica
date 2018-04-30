@@ -7,8 +7,23 @@
 	xmlns:b="http://bootsfaces.net/ui" xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
-		<b:column col-md="3" style="background-color: #CCCC">
-			Template Aqui também
-		</b:column>
+	<b:column col-xs="12" col-sm="3" col-md="2" styleClass="sidebar">
+		<b:navBar brandHref="#" inverse="true" fluid="true">
+			<b:listLinks>
+				<!-- b:navLink header="Dasboard Links" />  -->
+				<b:navLink href="#{request.contextPath}/pages/content.xhtml" value="INICIO" icon="home" active="true"
+					style="font-weight: bold;" />
+				<b:navLink href="#{request.contextPath}/pages/administradores.xhtml" icon="wrench" value="ADMINISTRADORES" />
+				<b:navLink href="#{request.contextPath}/pages/agendamentos.xhtml" value="AGENDAMENTOS" icon="calendar" />
+				<b:navLink href="#{request.contextPath}/pages/exames.xhtml" icon="copy" value="EXAMES" />
+				<b:navLink href="#{request.contextPath}/pages/especialidades.xhtml" icon="edit" value="ESPECIALIDADES" />
+				<b:navLink href="#{request.contextPath}/pages/medicos.xhtml" value="MÉDICOS" icon="education" />
+				<b:navLink href="#{request.contextPath}/pages/medicamentos.xhtml" icon="duplicate" value="MEDICAMENTOS" />
+				<b:navLink href="#{request.contextPath}/pages/pacientes.xhtml" icon="user" value="PACIENTES" />
+				<b:navLink href="#{request.contextPath}/pages/responsaveis.xhtml" icon="sunglasses" value="RESPONSÁVEIS" />
+				<b:navLink href="#{request.contextPath}/pages/tiposAtendimento.xhtml" icon="list-alt" value="TIPOS DE ATENDIMENTO" />
+			</b:listLinks>
+		</b:navBar>
+	</b:column>
 
 </ui:fragment>
