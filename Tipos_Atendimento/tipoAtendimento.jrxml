@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tipoAtendimento2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96dfb964-6b63-4b8a-88c0-f21ee01a9671">
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="descricao" class="java.lang.String"/>
+	<field name="ativo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="15" width="160" height="48" uuid="2411d8a2-3a17-40e1-a4c1-c6b535602db4"/>
+				<imageExpression><![CDATA["medsystemlogo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="176" y="15" width="134" height="48" uuid="0b838e2e-31cd-4b0b-aabb-a3b05fc784cc"/>
+				<text><![CDATA[Avenida da Saudade, 34 Centro, Piraju - SP 18800-000 (14) 3351-8759]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="40" width="60" height="20" isRemoveLineWhenBlank="true" uuid="f5705659-cb7f-43c3-aee1-10227cc9fbf4"/>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="40" width="100" height="20" uuid="3208da44-8893-4703-a0ac-2fdc895b84ee"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="390" y="15" width="60" height="20" uuid="627a3a4e-d1cd-4574-a537-176b25e7acef"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="15" width="100" height="20" uuid="bf46e479-c0c0-42cb-b0e8-cf0e206a3c6f"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="154" y="15" width="340" height="30" uuid="18af0550-d1c5-42be-bb0f-3f54c622c6f7"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE TIPOS DE ATENDIMENTOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="270" height="20" uuid="b9bca088-c83e-4d40-b211-9ffe2a904ecb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1c0bf5a-8ce7-4eea-b3a4-5f8795c032c7"/>
+				</reportElement>
+				<text><![CDATA[Descrição]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="277" height="20" uuid="2127719f-304c-45d7-a371-45321df95b00">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ec2a3e70-abb4-4b43-bbca-ef000c603dec"/>
+				</reportElement>
+				<text><![CDATA[Ativo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="-3" width="270" height="23" uuid="582f1b93-f433-46df-9229-069fc8921f4e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1c0bf5a-8ce7-4eea-b3a4-5f8795c032c7"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="278" y="-3" width="277" height="23" uuid="5a10244f-28e7-4945-bf93-519534cdebdd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ec2a3e70-abb4-4b43-bbca-ef000c603dec"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{ativo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-20" y="-8" width="595" height="2" uuid="cfda46c3-544f-4475-bb63-6fa4addf91ca"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="-4" width="595" height="2" uuid="d01eec37-e294-4c06-9719-a42a90c57568"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

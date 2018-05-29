@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>MEDSYSTEM</title>
+</h:head>
+<h:body>
+	<!-- <ui:composition template="../templates/template.xhtml">
+		<ui:define name="content"> -->
+	<b:container fluid="true">
+		<ui:insert name="navTop">
+			<ui:include src="../fragments/fragmentTop.xhtml" />
+		</ui:insert>
+
+		<b:row>
+			<ui:insert name="navLeft">
+				<ui:include src="../fragments/fragmentLeft.xhtml" />
+			</ui:insert>
+			<b:column col-sm="9" offset-sm="3" col-md="10" offset="2"
+				styleClass="main">
+				<b:row>
+					<b:column col-md="6">
+						<h4>ÍNICIO/CADASTRO/TIPOS DE ATENDIMENTO</h4>
+					</b:column>
+					<b:column col-md="6">
+						<b:form>
+							<b:row>
+								<b:column col-md="4">
+									<b:commandButton styleClass="btRemover"
+										style="float:right; margin: 8px;" look="danger"
+										value="REMOVER" icon="trash" update="formRemover"
+										oncomplete="$('.modalRemover').modal();unSelectRow();"></b:commandButton>
+								</b:column>
+								<b:column col-md="4">
+									<b:commandButton ajax="true" styleClass="btEditar"
+										style="float:right; margin: 8px;" look="success"
+										value="EDITAR" icon="plus-sign"
+										oncomplete="$('.modalEditar').modal();unSelectRow();"
+										update="formEditar">
+									</b:commandButton>
+								</b:column>
+								<b:column col-md="4">
+									<b:commandButton ajax="true" style="float:right; margin: 8px;"
+										look="success" value="NOVO" icon="plus-sign"
+										oncomplete="$('.modalNovo').modal();"
+										actionListener="#{MBTipoAtendimento.novo}" update="formNovo">
+									</b:commandButton>
+								</b:column>
+							</b:row>
+						</b:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<h:form>
+							<b:inputText placeholder="Busque pela descrição e ativo ..."
+								value="#{MBTipoAtendimento.search}">
+								<f:ajax event="keyup" listener="#{MBTipoAtendimento.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<b:form id="formTable">
+							<b:dataTable selectionInfo="false"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false"
+								onselect="selectRow();ajax:MBTipoAtendimento.onSelect(item, single, i);"
+								ondeselect="unSelectRow();" select="true" responsive="true"
+								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
+								var="item" value="#{MBTipoAtendimento.lista}"
+								selection-mode="single">
+								<f:facet name="header">
+									<tr>
+										<th>Id</th>
+										<th>Descrição</th>
+										<th>Ativo</th>
+									</tr>
+								</f:facet>
+
+								<b:dataTableColumn value="#{item.id}" />
+								<b:dataTableColumn value="#{item.descricao}" />
+								<b:dataTableColumn value="#{item.ativo}" />
+
+
+							</b:dataTable>
+						</b:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<h:form>
+							<a class="btn btn-default" href="#"
+								onclick="$('.btnRel').click();"><i class="fa fa-file"></i>
+								Relatório</a>
+							<h:commandLink style="display:none;" target="_blank"
+								actionListener="#{MBTipoAtendimento.chamarRelatorio}"
+								styleClass="btn btn-default btnRel" value="Relatorio" />
+						</h:form>
+					</b:column>
+				</b:row>
+			</b:column>
+		</b:row>
+	</b:container>
+
+	<!-- Modals -->
+	<b:form id="formNovo">
+		<b:modal title="Novo Registro" id="modalNovo" styleClass="modalNovo">
+			<b:panelGrid id="panelText" columns="1">
+				<b:inputText id="descricao"
+					value="#{MBTipoAtendimento.tipoAtendimento.descricao}"
+					label="Descrição" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:commandButton ajax="true" style="float: right; margin:8px;"
+					value="Salvar" look="primary"
+					actionListener="#{MBTipoAtendimento.salvar}"
+					update="formNovo:panelText formTable globalMsg" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger" dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formEditar">
+		<b:modal title="Editar Registro" id="modalEditar"
+			styleClass="modalEditar">
+			<b:panelGrid id="panelEditar" columns="1">
+				<b:label text="Id: #{MBTipoAtendimento.tipoAtendimento.id}" />
+				<b:inputText id="descricao"
+					value="#{MBTipoAtendimento.tipoAtendimento.descricao}"
+					label="Descrição" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:selectOneMenu value="#{MBTipoAtendimento.tipoAtendimento.ativo}"
+					label="Ativo:" required="true" requiredMessage="Campo Obrigatório!">
+					<f:selectItem itemLabel="Sim" itemValue="Sim" />
+					<f:selectItem itemLabel="Não" itemValue="Não" />
+				</b:selectOneMenu>
+				<b:message for="@previous" />
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:commandButton ajax="true" style="float: right; margin:8px;"
+					value="Salvar" look="primary"
+					actionListener="#{MBTipoAtendimento.editar}"
+					update="formTable globalMsg"
+					oncomplete="$('.modalEditar').modal('hide');" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger" dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formRemover">
+		<b:modal title="Remover Registro" id="modalRemover"
+			styleClass="modalRemover">
+			<b:panelGrid id="panelRemover" columns="1">
+				<b:label
+					text="Deseja Remover o Tipo de Atendimento #{MBTipoAtendimento.tipoAtendimento.descricao}" />
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:commandButton ajax="true" style="float: right; margin:8px;"
+					value="Sim" look="primary"
+					actionListener="#{MBTipoAtendimento.remover}"
+					update="formTable globalMsg"
+					oncomplete="$('.modalRemover').modal('hide');" />
+				<b:button style="float: left; margin:8px;" value="Não" look="danger"
+					dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<!-- 	</ui:define>
+	</ui:composition> -->
+</h:body>
+</html>
