@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tipoAtendimentoRelatorio" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8120d1ed-c86b-4ecb-a7a0-1e45826fa5ff">
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="tipoAtendimentoRelatorio" class="java.lang.String"/>
+	<field name="medicoRelatorio" class="java.lang.String"/>
+	<field name="pacienteRelatorio" class="java.lang.String"/>
+	<field name="dataHoraInicio" class="java.util.Date"/>
+	<field name="dataHoraFim" class="java.util.Date"/>
+	<field name="observacoes" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="85" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="15" width="160" height="48" uuid="007ec85d-d216-47ac-a9e5-a4cbb2b5e50c"/>
+				<imageExpression><![CDATA["medsystemlogo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="176" y="15" width="134" height="48" uuid="a92c7b21-e4c4-480b-9146-2710d268ed27"/>
+				<text><![CDATA[Avenida da Saudade, 34 Centro, Piraju - SP 18800-000 (14) 3351-8759]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="40" width="60" height="20" isRemoveLineWhenBlank="true" uuid="b3785270-6571-4472-bf36-d84861d86d5a"/>
+				<text><![CDATA[Usuário:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="40" width="100" height="20" uuid="00497054-75bc-4881-b342-5c2eb577669c"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="390" y="15" width="60" height="20" uuid="c965e0e6-57c3-4a10-8809-cb46b96a6529"/>
+				<text><![CDATA[Data:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="15" width="100" height="20" uuid="af423838-bb35-4c32-b61e-cf3162ccca9a"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="162" y="10" width="238" height="20" uuid="e8c070ec-e204-4b95-8144-9e9d8b22fce8"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RELATÓRIO DE AGENDAMENTOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="303" splitType="Stretch">
+			<textField>
+				<reportElement x="254" y="10" width="301" height="20" uuid="fb4b3cd2-8acf-4bb3-8193-25d277783b55"/>
+				<textFieldExpression><![CDATA[$F{tipoAtendimentoRelatorio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="10" width="150" height="20" uuid="df3bc8cb-2b6c-4100-8f46-b51ed5a25983"/>
+				<text><![CDATA[Tipo de atendimento]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="46" width="301" height="20" uuid="5107c901-3d34-4795-b936-751214a2319c"/>
+				<textFieldExpression><![CDATA[$F{medicoRelatorio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="46" width="150" height="20" uuid="2a58b074-7175-4a2c-8351-fe763b40db02"/>
+				<text><![CDATA[Médico]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="82" width="301" height="20" uuid="18eb8e52-7ee5-48c4-8e64-5400e9ae2fcb"/>
+				<textFieldExpression><![CDATA[$F{pacienteRelatorio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="82" width="150" height="20" uuid="9d0bdcac-7a02-49f7-b681-cc15d7f006b3"/>
+				<text><![CDATA[Paciente]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="118" width="301" height="20" uuid="199b34c9-e692-4b89-b3ea-73c25469616f"/>
+				<textFieldExpression><![CDATA[$F{dataHoraInicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="118" width="150" height="20" uuid="ebcf1bf9-e600-4256-8a61-f5bf173ce4e4"/>
+				<text><![CDATA[Data/Hora (Início)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="154" width="301" height="20" uuid="da4cd733-8433-4107-a09b-89f6d47f002f"/>
+				<textFieldExpression><![CDATA[$F{dataHoraFim}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="154" width="150" height="20" uuid="1d7d9029-8c35-4791-94ef-2ea9c9943e1d"/>
+				<text><![CDATA[Data/Hora (Fim)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="254" y="190" width="301" height="100" uuid="e81b30b2-7a99-4059-a3a9-a801d9a9ae12"/>
+				<textFieldExpression><![CDATA[$F{observacoes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="190" width="150" height="20" uuid="2a11c2f0-5a0c-4bb5-b242-f33c49961c6b"/>
+				<text><![CDATA[Observações]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="302" width="595" height="1" uuid="6e494ce7-6298-497e-b41d-6464c8a08a33"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
