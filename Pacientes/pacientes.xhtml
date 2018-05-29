@@ -1,0 +1,601 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:b="http://bootsfaces.net/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>MEDSYSTEM</title>
+</h:head>
+<h:body>
+	<!-- <ui:composition template="../templates/template.xhtml">
+		<ui:define name="content"> -->
+	<b:container fluid="true">
+		<ui:insert name="navTop">
+			<ui:include src="../fragments/fragmentTop.xhtml" />
+		</ui:insert>
+
+		<b:row>
+			<ui:insert name="navLeft">
+				<ui:include src="../fragments/fragmentLeft.xhtml" />
+			</ui:insert>
+			<b:column col-xs="12" col-sm="9" offset-sm="3" col-md="10" offset="2"
+				styleClass="main">
+				<b:row>
+					<b:column col-md="6">
+						<h4>ÍNICIO/CADASTRO/PACIENTES</h4>
+					</b:column>
+					<b:column col-md="6">
+						<b:form>
+							<b:row>
+								<b:column col-md="4">
+									<b:commandButton styleClass="btRemover"
+										style="float:right; margin: 8px;" look="danger"
+										value="REMOVER" icon="trash" update="formRemover"
+										oncomplete="$('.modalRemover').modal();unSelectRow();"></b:commandButton>
+								</b:column>
+								<b:column col-md="4">
+									<b:commandButton ajax="true" styleClass="btEditar"
+										style="float:right; margin: 8px;" look="success"
+										value="EDITAR" icon="plus-sign"
+										oncomplete="$('.modalEditar').modal();unSelectRow();initFormEditar();"
+										update="formEditar">
+									</b:commandButton>
+								</b:column>
+								<b:column col-md="4">
+									<b:commandButton ajax="true" style="float:right; margin: 8px;"
+										look="success" value="NOVO" icon="plus-sign"
+										oncomplete="$('.modalNovo').modal();initFormNovo();"
+										actionListener="#{MBPaciente.novo}" update="formNovo">
+									</b:commandButton>
+								</b:column>
+							</b:row>
+						</b:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<h:form>
+							<b:inputText
+								placeholder="Busque pelo nome, cpf, cidade, endereço, responsável e ativo ..."
+								value="#{MBPaciente.search}">
+								<f:ajax event="keyup" listener="#{MBPaciente.onSearch}"
+									render="formTable" />
+								<f:facet name="append">
+									<b:icon name="search"></b:icon>
+								</f:facet>
+							</b:inputText>
+						</h:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<b:form id="formTable">
+							<b:dataTable styleClass="table" selectionInfo="false" 
+								onselect="selectRow();ajax:MBPaciente.onSelect(item, single, i);"
+								ondeselect="unSelectRow();" select="true" responsive="true"
+								customLangUrl="../resources/jsons_options/Portuguese-Brasil.json"
+								customOptions="'searching':false,'scrollX':true,'autoWidth':false,'lengthChange':false,'columnDefs': [{ 'orderable': false, 'targets': 7 }]"
+								var="item" value="#{MBPaciente.listaPacientes}"
+								selection-mode="single">
+								<f:facet name="header">
+									<tr>
+										<th>Id</th>
+										<th>Nome</th>
+										<th>CPF</th>
+										<th>Cidade</th>
+										<th>Endereço</th>
+										<th>Responsável</th>
+										<th>Ativo</th>
+										<th style="text-align: center;"><b:icon size="lg"
+												name="cog" /></th>
+									</tr>
+								</f:facet>
+								<b:dataTableColumn value="#{item.id}" />
+								<b:dataTableColumn value="#{item.nome}" />
+								<b:dataTableColumn value="#{item.cpf}" />
+								<b:dataTableColumn value="#{item.cidade}" />
+								<b:dataTableColumn value="#{item.endereco}" />
+								<b:dataTableColumn value="#{item.responsavel.nome}" />
+								<b:dataTableColumn value="#{item.ativo}" />
+								<b:dataTableColumn style="text-align: center;">
+									<b:commandButton ajax="true" look="default" icon="info-sign"
+										size="xs" actionListener="#{MBPaciente.selectItemInfo}"
+										oncomplete="$('.modalInfo').modal('show');" update=":formInfo">
+										<f:attribute name="selected" value="#{item}" />
+									</b:commandButton>
+								</b:dataTableColumn>
+							</b:dataTable>
+						</b:form>
+					</b:column>
+				</b:row>
+				<b:row>
+					<b:column col-md="12">
+						<h:form>
+							<a class="btn btn-default" href="#"
+								onclick="$('.btnRel').click();"><i class="fa fa-file"></i>
+								Relatório</a>
+							<h:commandLink style="display:none;" target="_blank"
+								actionListener="#{MBPaciente.chamarRelatorio}"
+								styleClass="btn btn-default btnRel" value="Relatorio" />
+						</h:form>
+					</b:column>
+				</b:row>
+			</b:column>
+		</b:row>
+	</b:container>
+
+	<!-- Modals -->
+	<b:form id="formNovo">
+		<b:modal backdrop="false" closable="false" title="Novo Registro"
+			id="modalNovo" styleClass="modalNovo"
+			content-style="height: 300px !important; overflow-x: auto !important;">
+			<b:panelGrid style="text-align:center;" id="panelResp" columns="1">
+				<b:selectOneMenu label="Adicionar Responsável"
+					value="#{MBPaciente.hasResponsavel}"
+					onchange="selectRespOption(this.value);"
+					styleClass="selectResponsavel">
+					<f:selectItem itemValue="0" itemLabel="Não" />
+					<f:selectItem itemValue="1" itemLabel="Sim" />
+					<f:ajax event="change"
+						listener="#{MBPaciente.changeHasResponsavel}" />
+				</b:selectOneMenu>
+				<center>
+					<b:commandButton style="display:none;" styleClass="btAddRespNovo"
+						value="Adicionar Responsável" look="success"
+						oncomplete="$('.modalResponsavelList').modal('show');"
+						update="formResponsavelList" />
+				</center>
+			</b:panelGrid>
+			<b:panelGrid id="panelRespInfo" style="display:none;"
+				styleClass="panelRespInfo" columns="1">
+				<b:panel title="Informações do Responsável" collapsible="false">
+					<b:inputText styleClass="nomeRespFormNovo"
+						value="#{MBPaciente.paciente.responsavel.nome}" label="Nome"
+						readonly="true" />
+					<b:inputText styleClass="cpfRespFormNovo"
+						value="#{MBPaciente.paciente.responsavel.cpf}" label="CPF"
+						readonly="true" />
+				</b:panel>
+			</b:panelGrid>
+			<b:panelGrid id="panelText" columns="1">
+				<b:inputText id="nome" value="#{MBPaciente.paciente.nome}"
+					label="Nome" required="true" requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:selectOneMenu value="#{MBPaciente.paciente.sexo}" label="Sexo"
+					required="true" requiredMessage="Campo Obrigatório">
+					<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+					<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+				</b:selectOneMenu>
+				<b:message for="@previous" />
+				<b:inputText styleClass="cpfNovo" id="cpf" mask="999.999.999-99"
+					value="#{MBPaciente.paciente.cpf}" label="CPF" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText styleClass="rgNovo" id="rg"
+					value="#{MBPaciente.paciente.rg}" label="RG" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText mask="99/99/9999"
+					value="#{MBPaciente.paciente.dataNascimento}" required="true"
+					requiredMessage="Campo Obrigatório!" id="dataNascimento"
+					label="Data de Nascimento">
+					<f:convertDateTime locale="pt_BR" />
+				</b:inputText>
+				<b:message for="@previous" />
+				<b:panel styleClass="panelContatoNovo" title="Contato"
+					collapsible="false">
+					<b:inputText id="telefone" styleClass="txTelefoneFormNovo"
+						value="#{MBPaciente.paciente.telefone}" label="Telefone"
+						mask="(99)9999-9999" />
+					<b:inputText id="celular" styleClass="txCelularFormNovo"
+						value="#{MBPaciente.paciente.celular}" label="Celular"
+						mask="(99)99999-9999" />
+					<b:inputText styleClass="emailNovo" id="nomeUsuario"
+						value="#{MBPaciente.paciente.email}" label="Email" required="true"
+						requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+				<b:panel title="Localização" collapsible="false">
+					<b:inputText styleClass="cidadeNovo" id="cidade"
+						value="#{MBPaciente.paciente.cidade}" label="Cidade"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="enderecoNovo" id="endereco"
+						value="#{MBPaciente.paciente.endereco}" label="Endereço"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="numeroNovo" id="numero"
+						value="#{MBPaciente.paciente.numero}" label="Número"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="bairroNovo" id="bairro"
+						value="#{MBPaciente.paciente.bairro}" label="Bairro"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:alert style="display: none; text-align: left;" severity="danger"
+					styleClass="msgFoneCelFormNovo">
+					<strong>Digite um Celular ou um Telefone!</strong>
+				</b:alert>
+				<b:alert style="display: none; text-align: left;" severity="danger"
+					styleClass="msgRespFormNovo">
+					<strong>Escolha um Responsável!</strong>
+				</b:alert>
+				<b:button value="Salvar" look="primary"
+					onclick="return validaFormNovo();"
+					style="float: right; margin:8px;" />
+				<b:commandButton styleClass="commandButtonSalvarNovo" ajax="true"
+					style="float: right; margin:8px; display:none;" value="Salvar"
+					look="primary" action="#{MBPaciente.salvar}"
+					update="formNovo:panelText formTable globalMsg"
+					oncomplete="selectRespOption('1');" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger" dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formEditar">
+		<b:modal title="Editar Registro" id="modalEditar"
+			styleClass="modalEditar"
+			content-style="height: 300px !important; overflow-x: auto !important;"
+			backdrop="false" closable="false">
+			<b:panelGrid style="text-align:center;" id="panelResp" columns="1">
+				<b:selectOneMenu label="Adicionar Responsável"
+					value="#{MBPaciente.hasResponsavel}"
+					onchange="selectRespOptionEditar(this.value);"
+					styleClass="selectResponsavelEditar">
+					<f:selectItem itemValue="0" itemLabel="Não" />
+					<f:selectItem itemValue="1" itemLabel="Sim" />
+					<f:ajax event="change"
+						listener="#{MBPaciente.changeHasResponsavel}" />
+				</b:selectOneMenu>
+				<center>
+					<b:commandButton style="display:none;" styleClass="btAddRespEditar"
+						value="Adicionar Responsável" look="success"
+						oncomplete="$('.modalResponsavelList').modal('show');"
+						update="formResponsavelList" />
+				</center>
+			</b:panelGrid>
+			<b:panelGrid id="panelRespInfo" style="display:none;"
+				styleClass="panelRespInfoEditar" columns="1">
+				<b:panel title="Informações do Responsável" collapsible="false">
+					<b:inputText styleClass="nomeRespFormEditar"
+						value="#{MBPaciente.paciente.responsavel.nome}" label="Nome"
+						readonly="true" />
+					<b:inputText styleClass="cpfRespFormEditar"
+						value="#{MBPaciente.paciente.responsavel.cpf}" label="CPF"
+						readonly="true" />
+				</b:panel>
+			</b:panelGrid>
+			<b:panelGrid id="panelText" columns="1">
+				<b:inputText id="nome" value="#{MBPaciente.paciente.nome}"
+					label="Nome" required="true" requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:selectOneMenu value="#{MBPaciente.paciente.sexo}" label="Sexo"
+					required="true" requiredMessage="Campo Obrigatório">
+					<f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+					<f:selectItem itemValue="Feminino" itemLabel="Feminino" />
+				</b:selectOneMenu>
+				<b:message for="@previous" />
+				<b:inputText styleClass="cpfNovo" id="cpf" mask="999.999.999-99"
+					value="#{MBPaciente.paciente.cpf}" label="CPF" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText styleClass="rgNovo" id="rg"
+					value="#{MBPaciente.paciente.rg}" label="RG" required="true"
+					requiredMessage="Campo Obrigatório!" />
+				<b:message for="@previous" />
+				<b:inputText mask="99/99/9999"
+					value="#{MBPaciente.paciente.dataNascimento}" required="true"
+					requiredMessage="Campo Obrigatório!" id="dataNascimento"
+					label="Data de Nascimento">
+					<f:convertDateTime locale="pt_BR" />
+				</b:inputText>
+				<b:message for="@previous" />
+				<b:panel styleClass="panelContatoNovo" title="Contato"
+					collapsible="false">
+					<b:inputText id="telefone" styleClass="txTelefoneFormEditar"
+						value="#{MBPaciente.paciente.telefone}" label="Telefone"
+						mask="(99)9999-9999" />
+					<b:inputText id="celular" styleClass="txCelularFormEditar"
+						value="#{MBPaciente.paciente.celular}" label="Celular"
+						mask="(99)99999-9999" />
+					<b:inputText styleClass="emailEditar" id="nomeUsuario"
+						value="#{MBPaciente.paciente.email}" label="Email" required="true"
+						requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+				<b:panel title="Localização" collapsible="false">
+					<b:inputText styleClass="cidadeEditar" id="cidade"
+						value="#{MBPaciente.paciente.cidade}" label="Cidade"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="enderecoEditar" id="endereco"
+						value="#{MBPaciente.paciente.endereco}" label="Endereço"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="numeroEditar" id="numero"
+						value="#{MBPaciente.paciente.numero}" label="Número"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+					<b:inputText styleClass="bairroEditar" id="bairro"
+						value="#{MBPaciente.paciente.bairro}" label="Bairro"
+						required="true" requiredMessage="Campo Obrigatório!" />
+					<b:message for="@previous" />
+				</b:panel>
+				<b:selectOneMenu value="#{MBPaciente.paciente.ativo}" label="Ativo">
+					<f:selectItem itemLabel="Sim" itemValue="Sim" />
+					<f:selectItem itemValue="Não" itemLabel="Não" />
+				</b:selectOneMenu>
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:alert style="display: none; text-align: left;" severity="danger"
+					styleClass="msgFoneCelFormEditar">
+					<strong>Digite um Celular ou um Telefone!</strong>
+				</b:alert>
+
+				<b:alert style="display: none; text-align: left;" severity="danger"
+					styleClass="msgRespFormEditar">
+					<strong>Escolha um Responsável!</strong>
+				</b:alert>
+
+				<b:button value="Salvar" look="primary"
+					onclick="return validaFormEditar();"
+					style="float: right; margin:8px;" />
+				<b:commandButton ajax="true" styleClass="commandButtonSalvarEditar"
+					style="display: none; float: right; margin:8px;" value="Salvar"
+					look="primary" actionListener="#{MBPaciente.editar}"
+					update="formTable globalMsg formEditar:panelText" />
+				<b:button style="float: left; margin:8px;" value="Cancelar"
+					look="danger" dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formInfo">
+		<b:modal styleClass="modalInfo" id="modalInfo" title="Informações"
+			closable="true">
+			<h:panelGrid id="panelInfo" columns="2">
+				<h:outputText value="Id:" />
+				<h:outputText value="#{MBPaciente.paciente.id}" />
+				<h:outputText value="Nome:" />
+				<h:outputText value="#{MBPaciente.paciente.nome}" />
+				<h:outputText value="CPF:" />
+				<h:outputText value="#{MBPaciente.paciente.cpf}" />
+				<h:outputText value="RG:" />
+				<h:outputText value="#{MBPaciente.paciente.rg}" />
+				<h:outputText value="Data de Nascimento:" />
+				<h:outputText value="#{MBPaciente.paciente.dataNascimento}">
+					<f:convertDateTime locale="pt_BR" />
+				</h:outputText>
+				<h:outputText value="Telefone:" />
+				<h:outputText value="#{MBPaciente.paciente.telefone}" />
+				<h:outputText value="Celular:" />
+				<h:outputText value="#{MBPaciente.paciente.celular}" />
+				<h:outputText value="Cidade:" />
+				<h:outputText value="#{MBPaciente.paciente.cidade}" />
+				<h:outputText value="Endereço:" />
+				<h:outputText value="#{MBPaciente.paciente.endereco}" />
+				<h:outputText value="Número:" />
+				<h:outputText value="#{MBPaciente.paciente.numero}" />
+				<h:outputText value="Bairro:" />
+				<h:outputText value="#{MBPaciente.paciente.bairro}" />
+				<h:outputText value="Email:" />
+				<h:outputText value="#{MBPaciente.paciente.email}" />
+				<h:outputText value="Ativo:" />
+				<h:outputText value="#{MBPaciente.paciente.ativo}" />
+			</h:panelGrid>
+		</b:modal>
+	</b:form>
+
+	<b:form id="formRemover">
+		<b:modal title="Desativar Registro" id="modalRemover"
+			styleClass="modalRemover">
+			<b:panelGrid id="panelRemover" columns="1">
+				<b:label
+					text="Deseja Desativar o Paciente #{MBPaciente.paciente.nome} ?"
+					tooltip="Paciente são apenas desativados, para manter integridade de informações gerenciais do sistema!" />
+			</b:panelGrid>
+			<f:facet name="footer">
+				<b:commandButton ajax="true" style="float: right; margin:8px;"
+					value="Sim" look="primary" actionListener="#{MBPaciente.desativar}"
+					update="formTable globalMsg"
+					oncomplete="$('.modalRemover').modal('hide');" />
+				<b:button style="float: left; margin:8px;" value="Não" look="danger"
+					dismiss="modal" />
+			</f:facet>
+		</b:modal>
+	</b:form>
+
+	<ui:insert name="respFunctions">
+		<ui:include src="../fragments/fragmentResponsavelPaciente.xhtml" />
+	</ui:insert>
+
+	<!-- Validações Forms -->
+	<script>
+		function validaFormNovo() {
+			var txTelefone = $('.txTelefoneFormNovo');
+			var txCelular = $('.txCelularFormNovo');
+			var txNomeResp = $('.nomeRespFormNovo');
+
+			var msgFoneCel = $('.msgFoneCelFormNovo');
+			var msgResp = $('.msgRespFormNovo');
+
+			var command = $('.commandButtonSalvarNovo');
+
+			var ret = false;
+
+			if ($('.selectResponsavel').val() == "1") {
+				msgFoneCel.css("display", "none");
+				if (txNomeResp.val() != '') {
+					msgResp.css("display", "none");
+					ret = true;
+				} else {
+					ret = false;
+					msgResp.css("display", "block");
+				}
+			} else {
+				msgResp.css("display", "none");
+				if ((txTelefone.val() != '') || (txCelular.val() != '')) {
+					ret = true;
+					msgFoneCel.css("display", "none");
+				} else {
+					ret = false;
+					msgFoneCel.css("display", "block");
+				}
+			}
+
+			if (ret) {
+				command.click();
+				return true;
+			}
+			return false;
+		}
+
+		function validaFormEditar() {
+			var txTelefone = $('.txTelefoneFormEditar');
+			var txCelular = $('.txCelularFormEditar');
+			var txNomeResp = $('.nomeRespFormEditar');
+
+			var msgFoneCel = $('.msgFoneCelFormEditar');
+			var msgResp = $('.msgRespFormEditar');
+
+			var command = $('.commandButtonSalvarEditar');
+
+			var ret = false;
+
+			if ($('.selectResponsavelEditar').val() == "1") {
+				msgFoneCel.css("display", "none");
+				if (txNomeResp.val() != '') {
+					msgResp.css("display", "none");
+					ret = true;
+				} else {
+					ret = false;
+					msgResp.css("display", "block");
+				}
+			} else {
+				msgResp.css("display", "none");
+				if ((txTelefone.val() != '') || (txCelular.val() != '')) {
+					ret = true;
+					msgFoneCel.css("display", "none");
+				} else {
+					ret = false;
+					msgFoneCel.css("display", "block");
+				}
+			}
+
+			if (ret) {
+				command.click();
+				return true;
+			}
+			return false;
+		}
+
+		function initFormNovo() {
+			$('.selectResponsavel').val("0");
+		}
+
+		function initFormEditar() {
+			var cidade = $('.cidadeEditar');
+			var endereco = $('.enderecoEditar');
+			var numero = $('.numeroEditar');
+			var bairro = $('.bairroEditar');
+			var email = $('.emailEditar');
+
+			var panelResp = $('.panelRespInfoEditar');
+			var combo = $('.selectResponsavelEditar').val();
+
+			if (combo == "0") {
+				$('.btAddRespEditar').css("display", "none");
+				panelResp.css("display", "none");
+
+				cidade.removeAttr("disabled");
+				endereco.removeAttr("disabled");
+				numero.removeAttr("disabled");
+				bairro.removeAttr("disabled");
+				email.removeAttr("disabled");
+			} else {
+				$('.btAddRespEditar').css("display", "block");
+				panelResp.css("display", "block");
+
+				cidade.attr("disabled", "true");
+				endereco.attr("disabled", "true");
+				numero.attr("disabled", "true");
+				bairro.attr("disabled", "true");
+				email.attr("disabled", "true");
+			}
+		}
+
+		function selectRespOption(obj) {
+			var valor = obj;
+			var cidade = $('.cidadeNovo');
+			var endereco = $('.enderecoNovo');
+			var numero = $('.numeroNovo');
+			var bairro = $('.bairroNovo');
+			var email = $('.emailNovo');
+
+			if (valor == "1") {
+				$('.btAddRespNovo').css("display", "block");
+				cidade.attr("disabled", "true");
+				endereco.attr("disabled", "true");
+				numero.attr("disabled", "true");
+				bairro.attr("disabled", "true");
+				email.attr("disabled", "true");
+			} else {
+				$('.btAddRespNovo').css("display", "none");
+				$('.panelRespInfo').css("display", "none");
+				cidade.removeAttr("disabled");
+				endereco.removeAttr("disabled");
+				numero.removeAttr("disabled");
+				bairro.removeAttr("disabled");
+				email.removeAttr("disabled");
+				$('.nomeRespFormNovo').val("");
+				$('.cpfRespFormNovo').val("");
+			}
+		}
+
+		function selectRespOptionEditar(obj) {
+			var valor = obj;
+			var cidade = $('.cidadeEditar');
+			var endereco = $('.enderecoEditar');
+			var numero = $('.numeroEditar');
+			var bairro = $('.bairroEditar');
+			var email = $('.emailEditar');
+
+			if (valor == "1") {
+				$('.btAddRespEditar').css("display", "block");
+				$('.nomeRespFormEditar').attr("required", "true");
+				cidade.attr("disabled", "true");
+				endereco.attr("disabled", "true");
+				numero.attr("disabled", "true");
+				bairro.attr("disabled", "true");
+				email.attr("disabled", "true");
+
+				cidade.val("");
+				endereco.val("");
+				numero.val("");
+				bairro.val("");
+				email.val("");
+				$('.panelRespInfoEditar').css("display", "block");
+			} else {
+				$('.btAddRespEditar').css("display", "none");
+				$('.nomeRespFormEditar').attr("required", "false");
+				cidade.removeAttr("disabled");
+				endereco.removeAttr("disabled");
+				numero.removeAttr("disabled");
+				bairro.removeAttr("disabled");
+				email.removeAttr("disabled");
+				$('.panelRespInfoEditar').css("display", "none");
+
+				$('.nomeRespFormEditar').val("");
+				$('.cpfRespFormEditar').val("");
+			}
+		}
+	</script>
+</h:body>
+</html>
